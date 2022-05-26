@@ -30,3 +30,16 @@ do
 	echo -e "$(lottoDraw)\n$(bonusDraw)" > $CURRENT_DIR/lottoDir/userDraw$draw.`date +%m%d%Y`
 done
 }
+
+function splitGuess() {
+GUESS_STR=$USER_GUESSES
+DRAW_COUNT=$DRAW_COUNT
+
+for guess in $(eval echo "{1..$DRAW_COUNT}")
+do 
+	echo $guess
+	#echo $GUESS_STR
+	VAR=`echo $GUESS_STR | cut -d';' -f$guess`
+	echo $VAR
+done
+}
