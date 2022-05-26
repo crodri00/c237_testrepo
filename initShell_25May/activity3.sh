@@ -17,3 +17,5 @@ read USER_GUESSES
 #echo $USER_GUESSES
 splitGuess $USER_GUESSES
 
+compareGuess
+
