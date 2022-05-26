@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#USER_DRAW_COUNT=$1
+CURRENT_DIR=`pwd`
+mkdir $CURRENT_DIR/lottoDir
+
+function testFunc() {
+	echo hello
+}
+
+function lottoDraw() 
+{
+	echo "`shuf -i 1-50 -n 5`"
+}
+
+function bonusDraw()
+{
+	echo "`shuf -i 1-10 -n 1`"
+}
+
+function testFunction() {
+	echo "Hello"
+}
+
+function drawFiles() {
+for draw in $(eval echo "{1..$1}")
+do
+	#echo $draw
+	#echo "This is draw includes normal balls $(lottoDraw) and bonus ball $(bonusDraw)."
+	echo -e "$(lottoDraw)\n$(bonusDraw)" > $CURRENT_DIR/lottoDir/userDraw$draw.`date +%m%d%Y`
+done
+}
