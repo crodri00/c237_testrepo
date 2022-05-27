@@ -4,10 +4,6 @@
 CURRENT_DIR=`pwd`
 mkdir $CURRENT_DIR/lottoDir
 
-function testFunc() {
-	echo hello
-}
-
 function lottoDraw() 
 {
 	echo "`shuf -i 1-50 -n 5`"
@@ -18,17 +14,8 @@ function bonusDraw()
 	echo "`shuf -i 1-10 -n 1`"
 }
 
-function testFunction() {
-	echo "Hello"
-}
-
 function drawFiles() {
-for draw in $(eval echo "{1..$1}")
-do
-	#echo $draw
-	#echo "This is draw includes normal balls $(lottoDraw) and bonus ball $(bonusDraw)."
-	echo -e "$(lottoDraw)\n$(bonusDraw)" > $CURRENT_DIR/lottoDir/userDraw$draw.`date +%m%d%Y`
-done
+	echo -e "$(lottoDraw)\n$(bonusDraw)" > $CURRENT_DIR/lottoDir/userDraw.`date +%m%d%Y`
 }
 
 function splitGuess() {
@@ -48,67 +35,64 @@ done
 
 function compareGuess() {
 	LOTTO_DIR=$CURRENT_DIR/lottoDir
-	SKIP_COUNT=$DRAW_COUNT
+	DRAW_COUNT=$DRAW_COUNT
 
-	declare -a MATCH_ARR
+	#echo "$(cat $LOTTO_DIR/userDraw*)" 
+
+	STD_DRAW_i=$(cat $LOTTO_DIR/userDraw*| head -5 | sort -h)
+	POWER_DRAW_i=$(cat $LOTTO_DIR/userDraw*| tail -1)
+
+	#echo $STD_DRAW_i
+	#echo -e $POWER_DRAW_i"\n"
+
 	for i in $(eval echo "{1..$DRAW_COUNT}")
-	do
-		#echo "This is iteration $i."
+	do		
+		#echo -e "- - - -  - - - - - - - - - - - - - - - - This is iteration $i"
+		declare -a MATCH_ARR=()
+		declare -a POWER_ARR=()
+		
 		STD_GUESS_i=$(cat $LOTTO_DIR/userGuess$i*| head -5 | sort -h)
 		POWER_GUESS_i=$(cat $LOTTO_DIR/userGuess$i*| tail -1)
-		#echo $STD_GUESS_i
-		#echo $POWER_GUESS_i
 
-		STD_DRAW_i=$(cat $LOTTO_DIR/userDraw$i*| head -5 | sort -h)
-		POWER_DRAW_i=$(cat $LOTTO_DIR/userDraw$i*| tail -1)
-		#echo $STD_DRAW_i
-		#echo $POWER_DRAW_i
-		
-		#echo $STD_GUESS_i
-		#echo $STD_DRAW_i
-
-		#echo $POWER_GUESS_i
-		#echo $POWER_DRAW_i
-
-		for j in $(eval echo "{1..$(( $DRAW_COUNT*2-1 ))}")
+		for j in {1..5}
 		do
+			
+
 			STD_GUESS_pos=$(echo $STD_GUESS_i | awk -v j=$j '{print $j}')
+			
 			STD_DRAW_pos=$(echo $STD_DRAW_i | awk -v j=$j '{print $j}')
 
 			#echo $STD_GUESS_pos
 			#echo $STD_DRAW_pos
 
-			if (( "$STD_GUESS_pos"=="$STD_DRAW_pos" ))
-			then 
+			if (( $(echo $(echo $STD_DRAW_i | grep -w -- "$STD_GUESS_pos") | wc -w)>0 ))
+			then
 				#echo "There's a match!"
-				#echo $STD_GUESS_pos
 				MATCH_ARR+=($STD_GUESS_pos)
-			#else
-				#echo "Whammy!"
 			fi
 		done
 
-	if (( $(echo ${MATCH_ARR[@]} | wc -w)=="$DRAW_COUNT" ))
-        then
-                echo "You won this lottery draw!!"
-	elif (( $(echo ${MATCH_ARR[@]} | wc -w)>0 ))
-	then
-                #echo ${MATCH_ARR[@]}
-                echo -e "You did not win this lottery draw, but you have $(echo ${MATCH_ARR[@]} | wc -w) matches!! Namely, ${MATCH_ARR[@]}\n"
-	else
-		echo -e "Apologies, boo, for lottery draw #$i, you have NO matches! :'(\n"
-	fi
+		if (( "$POWER_GUESS_i" == "$POWER_DRAW_i" ))
+		then
+			#echo "Power ball matches!"
+			POWER_ARR+=($POWER_GUESS_i)
+		fi
+		
+		if (( $(echo ${MATCH_ARR[@]} | wc -w)==5 && $(echo ${POWER_ARR[@]} | wc -w)==1 ))
+		then
+			echo -e "You won this lottery draw!!\n"
+		elif (( $(echo ${MATCH_ARR[@]} | wc -w)>0 || $(echo ${POWER_ARR[@]} | wc -w)>0 ))
+		then
+			echo "Sorry, you did not match all the winning lottery numbers for draw $i, but you did match some!"
 
-	done	
-
-	#echo ${MATCH_ARR[@]}
-
-	#if (( $(echo ${MATCH_ARR[@]} | wc -w)=="$DRAW_COUNT" ))
-	#then
-	#	echo "You won this lottery draw!!"
-	#else
-	#	echo ${MATCH_ARR[@]}
-	#	echo "You have $(echo ${MATCH_ARR[@]} | wc -w) matches!!"
-	#fi 
-
+			if (( $(echo ${POWER_ARR[@]} | wc -w)>0 ))
+			then
+				echo -e "The matching lottery numbers are: ${MATCH_ARR[@]} with powerball match: ${POWER_ARR[@]}!\n"
+			else
+				echo -e "The matching lottery numbers are: ${MATCH_ARR[@]}!\n"
+			fi
+		else
+			echo -e "Sorry, there no matches for lottery draw $i!\n"
+		fi
+	done
 }
