@@ -8,7 +8,7 @@ function numCheck() {
 	PARAM_A=$PARAM_A
 	PARAM_B=$PARAM_B
 
-	while (( $(echo $PARAM_A | grep -v '[[:digit:]]' | wc -l)>0 || $(echo $PARAM_B | grep -v '[[:digit:]]' | wc -l)>0 ))
+	while (( $(echo $PARAM_A | grep -E '[[:alpha:]]|[[:punct:]]|[[:space:]]' | wc -l)>0 || $(echo $PARAM_B | grep -E '[[:alpha:]]|[[:punct:]]|[[:space:]]' | wc -l)>0 ))
 	do
 		echo -e "You did not enter a number! Please enter two numbers: "
 		read PARAM_A PARAM_B

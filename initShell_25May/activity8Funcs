@@ -1,0 +1,19 @@
+#!/bin/sh
+
+function mult_arr_entr () {
+	
+	USER_ARR=($@)
+	
+	ARR_LEN=$(echo $USER_ARR | wc -w)
+	
+	echo "${USER_ARR[@]}"
+	echo $ARR_LEN
+
+	#for i in $(eval echo "{0..$ARR_LEN}")
+	#do
+	#	echo $i
+	#done
+}
+
+
+#for i in $(eval echo "{1..$DRAW_COUNT}")
