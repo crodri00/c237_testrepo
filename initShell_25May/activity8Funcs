@@ -1,19 +1,82 @@
 #!/bin/sh
 
-function mult_arr_entr () {
-	
-	USER_ARR=($@)
-	
-	ARR_LEN=$(echo $USER_ARR | wc -w)
-	
-	echo "${USER_ARR[@]}"
-	echo $ARR_LEN
+function arr_product () {
 
-	#for i in $(eval echo "{0..$ARR_LEN}")
-	#do
-	#	echo $i
-	#done
+	declare -a USER_ARR=()
+
+	for i in $@
+	do
+		USER_ARR+=($i)
+	done
+
+	declare -a PROD_ARR=("${USER_ARR[0]}")
+
+	ARR_LEN=$(echo "${USER_ARR[@]}" | wc -w)
+	for j in $(eval echo "{0..$(( $ARR_LEN - 1 ))}")
+	do
+		PROD_ARR[0]=$(( $(echo "${PROD_ARR[0]}") * $(echo "${USER_ARR[$j]}") ))	
+	done
+
+	echo "${PROD_ARR[@]}"
+}
+
+function arr_sum () {
+	declare -a USER_ARR=()
+
+        for i in $@
+        do
+                USER_ARR+=($i)
+        done
+
+	declare -a SUM_ARR=("${USER_ARR[0]}")
+	ARR_LEN=$(echo "${USER_ARR[@]}" | wc -w)
+
+	for j in $(eval echo "{1..$(( $ARR_LEN - 1 ))}")
+        do
+                SUM_ARR[0]=$(( $(echo "${SUM_ARR[0]}") + $(echo "${USER_ARR[$j]}") ))
+		#echo $j
+		#echo "${SUM_ARR[@]}"
+        done
+
+        echo "${SUM_ARR[0]}"
+
+}
+
+function avg_arr () {
+	declare -a USER_ARR=()
+
+        for i in $@
+        do
+                USER_ARR+=($i)
+        done
+
+        declare -a SUM_ARR=("${USER_ARR[0]}")
+        ARR_LEN=$(echo "${USER_ARR[@]}" | wc -w)
+	
+	SUM_ARR=$(echo $(arr_sum "${USER_ARR[@]}"))
+
+	AVG_ARR=$(scale=2 ; echo "$SUM_ARR / $ARR_LEN" | bc)
+
+	echo $AVG_ARR
 }
 
 
-#for i in $(eval echo "{1..$DRAW_COUNT}")
+function mult_arr_entr () {
+	
+	declare -a USER_ARR=()
+	for i in $@
+	do
+		USER_ARR+=($i)
+	done
+
+	ARR_LEN=$(echo "${USER_ARR[@]}" | wc -w)
+	
+	ARR_PROD=$(echo $(arr_product "${USER_ARR[@]}"))
+	echo "${ARR_PROD[@]}"
+
+	SUM_ARR=$(echo $(arr_sum "${USER_ARR[@]}"))
+	echo "${SUM_ARR[0]}"
+
+	AVG_ARR=$(echo $(avg_arr "${USER_ARR[@]}"))
+	echo $AVG_ARR
+}

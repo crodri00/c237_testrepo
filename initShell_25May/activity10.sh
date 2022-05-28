@@ -1,9 +1,7 @@
 #!/bin/sh
 
 CURRENT_DIR=$(pwd)
-mkdir $CURRENT_DIR/sampDir9
-
-touch $CURRENT_DIR/sampDir9/fileName
+mkdir $CURRENT_DIR/sampDir10
 
 fileName=$1
 numLines=$2
@@ -13,11 +11,11 @@ then
 	echo "Sorry! That file exists already."
 	exit 1
 else
-	touch $CURRENT_DIR/sampDir9/$fileName.log
+	touch $CURRENT_DIR/sampDir10/$fileName.log
 	echo $fileName
 	echo $numLines
 
-	CURR_FILE=$CURRENT_DIR/sampDir9/$fileName.log
+	CURR_FILE=$CURRENT_DIR/sampDir10/$fileName.log
 
 	for i in $(eval echo "{1..$numLines}")
 	do

@@ -7,6 +7,7 @@ INT_COUNT=0
 declare -a INT_ARR=()
 echo "Hello! Please enter a series of 5-10 integers, with a minimum total of 5!"
 
+
 while [ $(echo "${INT_ARR[@]}" | wc -w) -lt 5 ]
 do
 	read USER_INT
@@ -51,9 +52,9 @@ do
 	echo "This is iteration $(( $i + 1 )) and it's value is "${INT_ARR[$i]}"."
 done
 
-echo $(echo "${INT_ARR[@]}" | wc -w)
+#echo $(echo "${INT_ARR[@]}" | wc -w)
 
-echo "${INT_ARR[@]}"
+#echo "${INT_ARR[@]}"
 #echo "${INT_ARR[@]}"
 
 mult_arr_entr "${INT_ARR[@]}"
