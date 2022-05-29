@@ -6,8 +6,8 @@ FILEB=$2
 #cat $FILEA
 #cat $FILEB
 
-FILEA_STR=$(cat $FILE_A | tr ' ' '\n')
-FILEB_STR=$(cat $FILE_B | tr ' ' '\n')
+FILEA_STR=$(cat $FILEA)
+FILEB_STR=$(cat $FILEB)
 
 #echo $FILEA_STR
 #echo $FILEB_STR
@@ -30,14 +30,11 @@ done
 FILEA_ARR=($(echo "${FILEA_ARR[@]}" | sed 's/ /\n/g' | sort | uniq))
 FILEB_ARR=($(echo "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq))
 
-echo "${FILEA_ARR[@]}"
-echo "${FILEB_ARR[@]}"
+subtraction_setB=$(echo "${FILEA_ARR[@]}" "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -d | xargs echo "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -u)
 
-#subtraction_setA=$(echo "${FILEA_ARR[@]}" "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -d | xargs echo "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -u)
+subtraction_setA=$(echo "${FILEB_ARR[@]}" "${FILEA_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -d | xargs echo "${FILEA_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -u)
 
-#subtraction_setB=$(echo "${FILEB_ARR[@]}" "${FILEA_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -d | xargs echo "${FILEA_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -u)
-
-#echo "${subtraction_setA[@]}"
-#echo "${subtraction_setB[@]}"
+echo -e "Only in file 1:\n${subtraction_setA[@]}"
+echo -e "Only in file 2:\n${subtraction_setB[@]}"
 
 
