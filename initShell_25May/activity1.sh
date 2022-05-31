@@ -5,7 +5,7 @@ CURRENT_DATE=`date +%m-%d-%Y`
 CURRENT_TIME=`date +'%T %Z'`
 CURRENT_DIR=`pwd`
 FILE_COUNT=$(( `ls -l | wc -l` - 1 ))
-BIGG_FILE=`du -ah --exclude='.git' | sort -r | tail -n +1 | head -1 | awk '{ print $2 }'`
+BIGG_FILE=`du -ah --exclude='.git' | sort -r | tail -n +2 | head -1 | awk '{ print $2 }'`
 
 echo "Hello, your username is $USERNAME."
 echo "The current date is $CURRENT_DATE."

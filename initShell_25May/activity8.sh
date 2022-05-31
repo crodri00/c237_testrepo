@@ -47,10 +47,10 @@ echo "${INT_ARR[@]}"
 
 INT_ARR_LEN=$(echo "${INT_ARR[@]}" | wc -w)
 
-for i in $(eval echo "{0..$(( $INT_ARR_LEN - 1 ))}")
-do
-	echo "This is iteration $(( $i + 1 )) and it's value is "${INT_ARR[$i]}"."
-done
+#for i in $(eval echo "{0..$(( $INT_ARR_LEN - 1 ))}")
+#do
+#	echo "This is iteration $(( $i + 1 )) and it's value is "${INT_ARR[$i]}"."
+#done
 
 #echo $(echo "${INT_ARR[@]}" | wc -w)
 

@@ -28,12 +28,12 @@ FILEA_ARR=($(echo "${FILEA_ARR[@]}" | sed 's/ /\n/g' | sort | uniq))
 FILEB_ARR=($(echo "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq))
 
 intersection_set=$(echo "${FILEA_ARR[@]}" "${FILEB_ARR[@]}" | sed 's/ /\n/g' | sort | uniq -d)
-echo $intersection_set 
+#echo $intersection_set 
 
 
 if [ $(echo $intersection_set | wc -w) -gt 0 ]
 then
-	echo "There is at least one common element!"
+	echo "There is at least one common element! Namely, '$intersection_set'."
 else
 	echo "Apologies, there are no common elements."
 fi

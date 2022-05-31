@@ -55,7 +55,7 @@ function avg_arr () {
 	
 	SUM_ARR=$(echo $(arr_sum "${USER_ARR[@]}"))
 
-	AVG_ARR=$(scale=2 ; echo "$SUM_ARR / $ARR_LEN" | bc)
+	AVG_ARR=$(echo 'scale=2;'"$SUM_ARR / $ARR_LEN" | bc)
 
 	echo $AVG_ARR
 }
@@ -72,11 +72,11 @@ function mult_arr_entr () {
 	ARR_LEN=$(echo "${USER_ARR[@]}" | wc -w)
 	
 	ARR_PROD=$(echo $(arr_product "${USER_ARR[@]}"))
-	echo "${ARR_PROD[@]}"
+	echo "The product of the provided integers is ${ARR_PROD[@]}."
 
 	SUM_ARR=$(echo $(arr_sum "${USER_ARR[@]}"))
-	echo "${SUM_ARR[0]}"
+	echo "The sum of the provided integers is ${SUM_ARR[0]}."
 
 	AVG_ARR=$(echo $(avg_arr "${USER_ARR[@]}"))
-	echo $AVG_ARR
+	echo "The average of the provided integers is approximately $AVG_ARR."
 }
